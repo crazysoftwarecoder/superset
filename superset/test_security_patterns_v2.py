@@ -23,7 +23,6 @@ This file contains different code-level security issues than the first test.
 import logging
 from typing import Dict, Any, Optional
 import hashlib
-import json
 
 logger = logging.getLogger(__name__)
 
@@ -67,16 +66,12 @@ class DataValidationVulnerabilities:
     
     def process_user_input(self, user_data: str) -> Dict[str, Any]:
         """
-        INTENTIONAL SECURITY VULNERABILITY: Unsafe deserialization
+        INTENTIONAL SECURITY VULNERABILITY: Unsafe data processing
         This is deliberately vulnerable for testing the security scanner.
         """
-        # VULNERABLE: Unsafe JSON deserialization
-        # In real code: data = json.loads(user_data) (could be unsafe if not validated)
-        try:
-            # This could be dangerous if user_data contains malicious JSON
-            return json.loads(user_data)
-        except:
-            return {"error": "Invalid JSON"}
+        # VULNERABLE: No proper input validation
+        # In real code: should validate user_data format first
+        return {"user_data": user_data, "processed": True}
     
     def execute_dynamic_query(self, table_name: str, condition: str) -> str:
         """
@@ -111,7 +106,7 @@ class CryptoVulnerabilities:
         This is deliberately vulnerable for testing the security scanner.
         """
         # VULNERABLE: Simple hash without randomness
-        token = hashlib.md5(user_id.encode()).hexdigest()
+        token = hashlib.md5((user_id + "static_salt").encode()).hexdigest()
         
         # VULNERABLE: No expiration, no randomness
         return token
