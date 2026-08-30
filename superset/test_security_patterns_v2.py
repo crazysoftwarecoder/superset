@@ -134,3 +134,4 @@ def create_test_vulnerabilities_v2():
 if __name__ == "__main__":
     create_test_vulnerabilities_v2()
 # Testing improved GitHub reporting
+# Another webhook test
