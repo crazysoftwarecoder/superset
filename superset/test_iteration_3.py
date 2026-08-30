@@ -19,10 +19,14 @@
 Test file iteration 3 - For testing improved security patterns
 """
 
-def vulnerable_query(user_input):
-    """SQL injection vulnerability"""
-    query = "SELECT * FROM users WHERE name = '" + user_input + "'"
-    return query
+from sqlalchemy import text
+from sqlalchemy.sql.elements import TextClause
+
+
+def user_query(user_input: str) -> TextClause:
+    """Build a lookup by user name with the name passed as a bound parameter."""
+    return text("SELECT * FROM users WHERE name = :name").bindparams(name=user_input)
+
 
 if __name__ == "__main__":
-    print(vulnerable_query("test"))
+    print(user_query("test"))
