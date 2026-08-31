@@ -19,10 +19,11 @@
 Clean test for Devin AI-only security analysis
 """
 
-def test_devin_sql_injection(user_input):
-    """SQL injection vulnerability for Devin AI to detect and fix"""
-    query = "SELECT * FROM users WHERE name = '" + user_input + "'"
-    return query
+
+def build_user_query(user_input: str) -> tuple[str, tuple[str, ...]]:
+    """Build a parameterized query selecting users by name, plus its bind values."""
+    return "SELECT * FROM users WHERE name = ?", (user_input,)
+
 
 if __name__ == "__main__":
-    print(test_devin_sql_injection("test"))
+    print(build_user_query("test"))
